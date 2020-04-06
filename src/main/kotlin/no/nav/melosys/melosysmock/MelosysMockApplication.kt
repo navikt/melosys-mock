@@ -9,8 +9,7 @@ import io.ktor.locations.Locations
 import io.ktor.routing.Routing
 import io.ktor.routing.route
 import io.ktor.util.KtorExperimentalAPI
-import no.nav.melosys.melosysmock.api.euxApi
-import no.nav.melosys.melosysmock.api.journalpostapiApi
+import no.nav.melosys.melosysmock.api.*
 
 
 fun main(args: Array<String>) : Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -34,6 +33,12 @@ fun Application.MelosysMockApplication() {
 
         route("/rest") {
             journalpostapiApi()
+            dokkatApi()
+            restStsApi()
+        }
+
+        route("/internal") {
+            kafkaApi()
         }
     }
 }
