@@ -1,6 +1,4 @@
-package no.nav.melosys.melosysmock.kafka
-
-
+package no.nav.melosys.melosysmock.eux
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.apache.kafka.clients.producer.KafkaProducer
