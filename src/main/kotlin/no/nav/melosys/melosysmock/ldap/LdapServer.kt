@@ -16,7 +16,18 @@ class LdapServer {
     private val listenerPortLdap =
         Integer.valueOf(System.getProperty("ldap.port", "8389")) // 389 er default port for LDAP
 
-    val directoryServer: InMemoryDirectoryServer
+    final val directoryServer: InMemoryDirectoryServer
+
+    init {
+        val cfg = InMemoryDirectoryServerConfig("DC=local")
+        cfg.setEnforceAttributeSyntaxCompliance(false)
+        cfg.setEnforceSingleStructuralObjectClass(false)
+        cfg.schema = null // dropper valider schema slik at vi slipper å definere alle object classes
+        val ldapConfig = InMemoryListenerConfig.createLDAPConfig("LDAP", listenerPortLdap)
+        cfg.setListenerConfigs(ldapConfig)
+        directoryServer = InMemoryDirectoryServer(cfg)
+        readLdifFilesFromClasspath(directoryServer)
+    }
 
     private fun readLdifFilesFromClasspath(server: InMemoryDirectoryServer) {
         val ldifs = javaClass.classLoader.getResources(BASEDATA_USERS_LDIF)
@@ -46,16 +57,5 @@ class LdapServer {
     companion object {
         private val log = LoggerFactory.getLogger(LdapServer::class.java)
         private const val BASEDATA_USERS_LDIF = "users.ldif"
-    }
-
-    init {
-        val cfg = InMemoryDirectoryServerConfig("DC=local")
-        cfg.setEnforceAttributeSyntaxCompliance(false)
-        cfg.setEnforceSingleStructuralObjectClass(false)
-        cfg.schema = null // dropper valider schema slik at vi slipper å definere alle object classes
-        val ldapConfig = InMemoryListenerConfig.createLDAPConfig("LDAP", listenerPortLdap)
-        cfg.setListenerConfigs(ldapConfig)
-        directoryServer = InMemoryDirectoryServer(cfg)
-        readLdifFilesFromClasspath(directoryServer)
     }
 }
