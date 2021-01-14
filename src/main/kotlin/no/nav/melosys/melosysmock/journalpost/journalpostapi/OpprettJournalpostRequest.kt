@@ -57,7 +57,7 @@ data class Bruker (
 )
 
 enum class BrukerIdType {
-    FNR, ORGNR, AKTOERID
+    FNR, ORGNR
 }
 
 data class TilleggsopplysningReq (
