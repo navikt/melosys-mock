@@ -1,5 +1,6 @@
-package no.nav.melosys.melosysmock.journalpost
+package no.nav.melosys.melosysmock.journalpost.journalpostapi
 
+import no.nav.melosys.melosysmock.journalpost.JournalpostMapper
 import no.nav.melosys.melosysmock.journalpost.JournalpostRepo.repo
 import no.nav.melosys.melosysmock.journalpost.intern_modell.JournalStatus
 import no.nav.melosys.melosysmock.journalpost.intern_modell.JournalpostModell
@@ -30,14 +31,9 @@ class JournalpostApi {
         @PathVariable("journalpostID") journalpostID: String,
         @RequestBody request: OppdaterJournalpostRequest
     ) {
-
         return (repo[journalpostID] ?: throw NoSuchElementException(""))
             .let { JournalpostMapper().oppdaterModell(request, it) }
             .also { repo[journalpostID] = it }
             .let { mapOf("journalpostId" to it.journalpostId) }
     }
-}
-
-object JournalpostRepo {
-    val repo: MutableMap<String, JournalpostModell> = mutableMapOf()
 }

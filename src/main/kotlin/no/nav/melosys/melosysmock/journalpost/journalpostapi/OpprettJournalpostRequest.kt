@@ -1,4 +1,4 @@
-package no.nav.melosys.melosysmock.journalpost
+package no.nav.melosys.melosysmock.journalpost.journalpostapi
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import java.time.LocalDate

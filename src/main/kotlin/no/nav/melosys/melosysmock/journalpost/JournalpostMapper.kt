@@ -3,6 +3,10 @@ package no.nav.melosys.melosysmock.journalpost
 import no.nav.melosys.melosysmock.journalpost.intern_modell.*
 import no.nav.melosys.melosysmock.journalpost.intern_modell.AvsenderMottaker
 import no.nav.melosys.melosysmock.journalpost.intern_modell.IdType
+import no.nav.melosys.melosysmock.journalpost.journalpostapi.Dokument
+import no.nav.melosys.melosysmock.journalpost.journalpostapi.DokumentVariant
+import no.nav.melosys.melosysmock.journalpost.journalpostapi.OppdaterJournalpostRequest
+import no.nav.melosys.melosysmock.journalpost.journalpostapi.OpprettJournalpostRequest
 import java.time.LocalDate
 import kotlin.random.Random
 
