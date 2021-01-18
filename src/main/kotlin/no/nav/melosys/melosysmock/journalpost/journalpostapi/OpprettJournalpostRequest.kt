@@ -36,6 +36,10 @@ data class OppdaterJournalpostRequest(
     val dokumenter: List<DokumentOppdatering>? = null,
 )
 
+data class FerdigstillJournalpostRequest(
+    val journalfoerendeEnhet: String? = null
+)
+
 enum class JournalpostType {
     INNGAAENDE, UTGAAENDE, NOTAT
 }

@@ -26,7 +26,7 @@ class JournalpostApi {
             }
     }
 
-    @PutMapping("/{journalpostID}")
+    @PutMapping("/journalpost/{journalpostID}")
     fun oppdaterJournalpost(
         @PathVariable("journalpostID") journalpostID: String,
         @RequestBody request: OppdaterJournalpostRequest
@@ -35,5 +35,14 @@ class JournalpostApi {
             .let { JournalpostMapper().oppdaterModell(request, it) }
             .also { repo[journalpostID] = it }
             .let { mapOf("journalpostId" to it.journalpostId) }
+    }
+
+    @PatchMapping("/journalpost/{journalpostID}/ferdigstill")
+    fun ferdigstillJournalpost(
+        @PathVariable("journalpostID") journalpostID: String,
+        @RequestBody request: FerdigstillJournalpostRequest) {
+        val journalpost = repo[journalpostID] ?: throw NoSuchElementException("Ingen journalpost med id $journalpostID")
+        journalpost.validerKanFerdigstilles()
+        journalpost.journalStatus = JournalStatus.J
     }
 }

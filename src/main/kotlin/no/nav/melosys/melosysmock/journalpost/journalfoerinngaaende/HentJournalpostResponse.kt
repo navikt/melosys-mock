@@ -34,7 +34,7 @@ fun lagRespons(journalpost: JournalpostModell) : HentJournalpostResponse {
         tittel = journalpost.tittel,
         kanalReferanseId = journalpost.eksternReferanseId,
         forsendelseMottatt = journalpost.mottattDato?.atStartOfDay()?.atZone(ZoneId.systemDefault()),
-        mottaksKanal = journalpost.mottakskanal,
+        mottaksKanal = journalpost.kanal,
         journalfEnhet = journalpost.journalfoerendeEnhet,
         dokumentListe = journalpost.dokumentModellList.map {
             Dokument(
