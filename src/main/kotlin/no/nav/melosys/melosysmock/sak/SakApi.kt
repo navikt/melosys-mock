@@ -16,7 +16,7 @@ class SakApi {
         }
 
         val sak = Sak(
-            id = Random.nextLong(),
+            id = Random.nextLong(10_000, 10_000_000),
             tema = opprettSakRequest.tema!!,
             applikasjon = opprettSakRequest.applikasjon!!,
             fagsakNr = opprettSakRequest.fagsakNr!!,
@@ -25,6 +25,7 @@ class SakApi {
 
         SakRepo.leggTilSak(sak)
         return SakDto(
+            id = sak.id,
             tema = sak.tema,
             applikasjon = sak.applikasjon,
             fagsakNr = sak.fagsakNr,
@@ -53,6 +54,7 @@ class SakApi {
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class SakDto(
+    var id: Long? = null,
     var tema: String? = null,
     var applikasjon: String? = null,
     var fagsakNr: String? = null,
