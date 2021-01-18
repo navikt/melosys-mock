@@ -30,7 +30,11 @@ data class DokumentModell(
     var dokumentTilknyttetJournalpost: DokumentTilknyttetJournalpost? = null,
     var dokumentVarianter: List<DokumentVariantInnhold>? = mutableListOf(),
     var dokumentkategori: String? = null
-)
+) {
+    fun harVariantArkiv(): Boolean {
+        return dokumentVarianter?.any { it.variantFormat == VariantFormat.ARKIV } ?: false
+    }
+}
 
 data class AvsenderMottaker(
     var id: String? = null,
