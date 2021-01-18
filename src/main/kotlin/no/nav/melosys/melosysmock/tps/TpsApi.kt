@@ -7,6 +7,8 @@ import no.nav.tjeneste.virksomhet.aktoer.v2.HentIdentForAktoerId
 import no.nav.tjeneste.virksomhet.aktoer.v2.HentIdentForAktoerIdResponse
 import no.nav.tjeneste.virksomhet.person.v3.HentPerson
 import no.nav.tjeneste.virksomhet.person.v3.HentPersonResponse
+import no.nav.tjeneste.virksomhet.person.v3.HentPersonhistorikk
+import no.nav.tjeneste.virksomhet.person.v3.HentPersonhistorikkResponse
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentPersonPersonIkkeFunnet
 import no.nav.tjeneste.virksomhet.person.v3.feil.PersonIkkeFunnet
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.*
@@ -92,6 +94,30 @@ class TpsApi {
                             )
                     )
             )
+    }
+
+    @PayloadRoot(namespace = "http://nav.no/tjeneste/virksomhet/person/v3", localPart = "hentPersonhistorikk")
+    @ResponsePayload
+    fun hentPersonhistorikk(@RequestPayload hentPersonhistorikk: HentPersonhistorikk): HentPersonhistorikkResponse {
+        val person = PersonRepo.repo[(hentPersonhistorikk.request.aktoer as PersonIdent).ident.ident]!!
+        return HentPersonhistorikkResponse()
+            .withResponse(
+                no.nav.tjeneste.virksomhet.person.v3.meldinger.HentPersonhistorikkResponse()
+                    .withAktoer(PersonIdent().withIdent(NorskIdent().withIdent(person.ident)))
+                    .withStatsborgerskapListe(
+                        StatsborgerskapPeriode()
+                            .withPeriode(
+                                Periode().withFom(
+                                    DatatypeFactory.newInstance()
+                                        .newXMLGregorianCalendar(person.foedselsdato.toString())
+                                )
+                            )
+                            .withStatsborgerskap(
+                                Statsborgerskap().withLand(Landkoder().withValue(person.ident))
+                            )
+                    )
+            )
+
     }
 }
 
