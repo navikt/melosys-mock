@@ -96,6 +96,11 @@
             <artifactId>nav-journal-v3-tjenestespesifikasjon</artifactId>
             <version>${nav.tjenestespesifikasjoner.version}</version>
         </dependency>
+        <dependency>
+            <groupId>no.nav.tjenestespesifikasjoner</groupId>
+            <artifactId>person-v3-tjenestespesifikasjon</artifactId>
+            <version>${nav.tjenestespesifikasjoner.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
