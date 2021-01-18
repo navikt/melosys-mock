@@ -18,15 +18,17 @@
     <properties>
         <java.version>11</java.version>
         <kotlin.version>1.4.10</kotlin.version>
+        <kotlin.compiler.jvmTarget>11</kotlin.compiler.jvmTarget>
+        <nav.tjenestespesifikasjoner.version>1.2020.01.09-12.44-3713b7c04e1c</nav.tjenestespesifikasjoner.version>
         <spring-boot.version>2.4.1</spring-boot.version>
         <springfox.version>3.0.0</springfox.version>
-        <kotlin.compiler.jvmTarget>11</kotlin.compiler.jvmTarget>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-reflect</artifactId>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1.1</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
@@ -41,13 +43,28 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
         <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-reflect</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web-services</artifactId>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -67,6 +84,17 @@
             <groupId>com.unboundid</groupId>
             <artifactId>unboundid-ldapsdk</artifactId>
             <version>5.1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>wsdl4j</groupId>
+            <artifactId>wsdl4j</artifactId>
+        </dependency>
+
+        <!-- NAV-avhengigheter -->
+        <dependency>
+            <groupId>no.nav.tjenestespesifikasjoner</groupId>
+            <artifactId>nav-journal-v3-tjenestespesifikasjon</artifactId>
+            <version>${nav.tjenestespesifikasjoner.version}</version>
         </dependency>
     </dependencies>
 
@@ -98,6 +126,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
         </plugins>
     </build>
 </project>
