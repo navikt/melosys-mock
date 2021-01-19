@@ -103,6 +103,11 @@
         </dependency>
         <dependency>
             <groupId>no.nav.tjenestespesifikasjoner</groupId>
+            <artifactId>nav-fim-inntekt-v3-tjenestespesifikasjon</artifactId>
+            <version>${nav.tjenestespesifikasjoner.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tjenestespesifikasjoner</groupId>
             <artifactId>nav-journal-v3-tjenestespesifikasjon</artifactId>
             <version>${nav.tjenestespesifikasjoner.version}</version>
         </dependency>
