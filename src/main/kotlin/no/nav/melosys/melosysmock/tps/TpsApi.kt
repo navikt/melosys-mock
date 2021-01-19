@@ -23,6 +23,9 @@ import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition
 import org.springframework.xml.xsd.SimpleXsdSchema
 import org.springframework.xml.xsd.XsdSchema
 import java.time.LocalDate
+import java.time.LocalTime
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import javax.xml.datatype.DatatypeFactory
 
 @Endpoint
@@ -57,7 +60,9 @@ class TpsApi {
                                 Foedselsdato()
                                     .withFoedselsdato(
                                         DatatypeFactory.newInstance()
-                                            .newXMLGregorianCalendar(person.foedselsdato.toString())
+                                            .newXMLGregorianCalendar(
+                                                OffsetDateTime.of(person.foedselsdato, LocalTime.now(), OffsetDateTime.now().offset).toString()
+                                            )
                                     )
                             )
                             .withAktoer(PersonIdent().withIdent(NorskIdent().withIdent(ident)))
@@ -109,7 +114,9 @@ class TpsApi {
                             .withPeriode(
                                 Periode().withFom(
                                     DatatypeFactory.newInstance()
-                                        .newXMLGregorianCalendar(person.foedselsdato.toString())
+                                        .newXMLGregorianCalendar(
+                                            OffsetDateTime.of(person.foedselsdato, LocalTime.now(), OffsetDateTime.now().offset).toString()
+                                        )
                                 )
                             )
                             .withStatsborgerskap(

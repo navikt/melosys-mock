@@ -19,6 +19,7 @@
         <java.version>11</java.version>
         <kotlin.version>1.4.10</kotlin.version>
         <kotlin.compiler.jvmTarget>11</kotlin.compiler.jvmTarget>
+        <medlemskapsunntak-api-v1.version>1.1</medlemskapsunntak-api-v1.version>
         <nav.tjenestespesifikasjoner.version>1.2020.01.09-12.44-3713b7c04e1c</nav.tjenestespesifikasjoner.version>
         <spring-boot.version>2.4.1</spring-boot.version>
         <springfox.version>3.0.0</springfox.version>
@@ -91,6 +92,11 @@
         </dependency>
 
         <!-- NAV-avhengigheter -->
+        <dependency>
+            <groupId>no.nav.tjenester</groupId>
+            <artifactId>medlemskapsunntak-api-v1</artifactId>
+            <version>${medlemskapsunntak-api-v1.version}</version>
+        </dependency>
         <dependency>
             <groupId>no.nav.tjenestespesifikasjoner</groupId>
             <artifactId>nav-arbeidsforhold-v3-tjenestespesifikasjon</artifactId>
