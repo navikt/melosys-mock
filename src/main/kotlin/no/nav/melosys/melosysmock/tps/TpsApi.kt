@@ -1,6 +1,7 @@
 package no.nav.melosys.melosysmock.tps
 
 import no.nav.melosys.melosysmock.person.PersonRepo
+import no.nav.melosys.melosysmock.utils.tilXmlGregorianCalendar
 import no.nav.tjeneste.virksomhet.aktoer.v2.HentAktoerIdForIdent
 import no.nav.tjeneste.virksomhet.aktoer.v2.HentAktoerIdForIdentResponse
 import no.nav.tjeneste.virksomhet.aktoer.v2.HentIdentForAktoerId
@@ -23,7 +24,6 @@ import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition
 import org.springframework.xml.xsd.SimpleXsdSchema
 import org.springframework.xml.xsd.XsdSchema
 import java.time.LocalDate
-import javax.xml.datatype.DatatypeFactory
 
 @Endpoint
 class TpsApi {
@@ -56,8 +56,7 @@ class TpsApi {
                             .withFoedselsdato(
                                 Foedselsdato()
                                     .withFoedselsdato(
-                                        DatatypeFactory.newInstance()
-                                            .newXMLGregorianCalendar(person.foedselsdato.toString())
+                                        tilXmlGregorianCalendar(person.foedselsdato)
                                     )
                             )
                             .withAktoer(PersonIdent().withIdent(NorskIdent().withIdent(ident)))
@@ -108,12 +107,11 @@ class TpsApi {
                         StatsborgerskapPeriode()
                             .withPeriode(
                                 Periode().withFom(
-                                    DatatypeFactory.newInstance()
-                                        .newXMLGregorianCalendar(person.foedselsdato.toString())
+                                    tilXmlGregorianCalendar(person.foedselsdato)
                                 )
                             )
                             .withStatsborgerskap(
-                                Statsborgerskap().withLand(Landkoder().withValue(person.ident))
+                                Statsborgerskap().withLand(Landkoder().withValue(person.statsborgerskap))
                             )
                     )
             )

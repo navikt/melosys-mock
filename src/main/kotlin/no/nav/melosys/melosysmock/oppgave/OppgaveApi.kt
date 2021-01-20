@@ -20,7 +20,8 @@ class OppgaveApi {
         @RequestParam("statuskategori", required = false) statuskategori: String? = null,
         @RequestParam("behandlesAvApplikasjon", required = false) behandlesAvApplikasjon: String? = null,
         @RequestParam("behandlingstype", required = false) behandlingstype: String? = null,
-        @RequestParam("behandlingstema", required = false) behandlingstema: String? = null
+        @RequestParam("behandlingstema", required = false) behandlingstema: String? = null,
+        @RequestParam("saksreferanse", required = false) saksreferanse: String? = null
     ): OppgavelisteRespons {
         val oppgaver = oppgaveRepo.values
             .filter {
@@ -30,7 +31,8 @@ class OppgaveApi {
                 (statuskategori == null || harStatuskategori(statuskategori, it)) &&
                 (behandlesAvApplikasjon == null || behandlesAvApplikasjon == it.behandlesAvApplikasjon) &&
                 (behandlingstype == null || behandlingstype == it.behandlingstype) &&
-                (behandlingstema == null || behandlingstema == it.behandlingstema)
+                (behandlingstema == null || behandlingstema == it.behandlingstema) &&
+                (saksreferanse == null || saksreferanse == it.saksreferanse)
             }
 
         return OppgavelisteRespons(oppgaver.size, oppgaver)

@@ -5,6 +5,7 @@ import no.nav.melosys.melosysmock.journalpost.JournalpostRepo.repo
 import no.nav.melosys.melosysmock.journalpost.intern_modell.JournalStatus
 import no.nav.melosys.melosysmock.journalpost.intern_modell.JournalpostModell
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/rest/journalpostapi/v1")
@@ -43,6 +44,7 @@ class JournalpostApi {
         @RequestBody request: FerdigstillJournalpostRequest) {
         val journalpost = repo[journalpostID] ?: throw NoSuchElementException("Ingen journalpost med id $journalpostID")
         journalpost.validerKanFerdigstilles()
+        journalpost.journalfoertDato = LocalDateTime.now()
         journalpost.journalStatus = JournalStatus.J
     }
 }
