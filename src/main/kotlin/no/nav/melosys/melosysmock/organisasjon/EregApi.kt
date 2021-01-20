@@ -1,5 +1,6 @@
 package no.nav.melosys.melosysmock.organisasjon
 
+import no.nav.melosys.melosysmock.utils.tilXmlGregorianCalendar
 import no.nav.tjeneste.virksomhet.organisasjon.v4.HentOrganisasjon
 import no.nav.tjeneste.virksomhet.organisasjon.v4.HentOrganisasjonResponse
 import no.nav.tjeneste.virksomhet.organisasjon.v4.informasjon.*
@@ -14,13 +15,12 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload
 import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition
 import org.springframework.xml.xsd.SimpleXsdSchema
 import org.springframework.xml.xsd.XsdSchema
-import java.time.OffsetDateTime
+import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.xml.datatype.DatatypeFactory
 
 @Endpoint
 class EregApi {
-
-    val datatypeFactory = DatatypeFactory.newInstance()!!
 
     @PayloadRoot(
         namespace = "http://nav.no/tjeneste/virksomhet/organisasjon/v4",
@@ -35,43 +35,39 @@ class EregApi {
             response = no.nav.tjeneste.virksomhet.organisasjon.v4.meldinger.HentOrganisasjonResponse().apply {
                 organisasjon = JuridiskEnhet()
                     .apply {
-                        juridiskEnhetDetaljer = JuridiskEnhetDetaljer()
-                            .apply {
+                        navn = UstrukturertNavn().apply { navnelinje.add(organisasjonModell.navn) }
+                        orgnummer = organisasjonModell.orgnr
+                        juridiskEnhetDetaljer = JuridiskEnhetDetaljer().apply {
                                 this.sektorkode = Sektorkoder().apply { kodeRef = "2100" }
                                 this.enhetstype = EnhetstyperJuridiskEnhet().apply { kodeRef = "AS" }
-                            }
+                        }
+                        organisasjonDetaljer = OrganisasjonsDetaljer().apply {
+                            registreringsDato = tilXmlGregorianCalendar(LocalDate.now().minusYears(1))
+                            datoSistEndret = tilXmlGregorianCalendar(LocalDate.now().minusYears(1))
+                            orgnummer = organisasjonModell.orgnr
+                            forretningsadresse.add(tilSemistrukturertAdresse(organisasjonModell.forretningsadresse))
+                            postadresse.add(tilSemistrukturertAdresse(organisasjonModell.postadresse))
+                            navn.add(Organisasjonsnavn().apply {
+                                navn = UstrukturertNavn().apply { navnelinje.add(organisasjonModell.navn) }
+                                redigertNavn = organisasjonModell.navn
+                                fomBruksperiode = tilXmlGregorianCalendar(LocalDate.now().minusYears(1))
+                                fomGyldighetsperiode = tilXmlGregorianCalendar(LocalDate.now().minusYears(1))
+                            })
+                            telefon.add(Telefonnummer().apply {
+                                fomGyldighetsperiode = tilXmlGregorianCalendar(LocalDate.now().minusYears(1))
+                                fomBruksperiode = tilXmlGregorianCalendar(LocalDate.now().minusYears(1))
+                                identifikator = "+47 12 34 56 78"
+                                type = Telefontyper().apply { this.value = "ARBT" }
+                            })
+                            navSpesifikkInformasjon = NAVSpesifikkInformasjon().apply { isErIA = false }
+                            naering.add(Naering().apply {
+                                fomBruksperiode = tilXmlGregorianCalendar(LocalDate.now().minusYears(1))
+                                fomGyldighetsperiode = tilXmlGregorianCalendar(LocalDate.now().minusYears(1))
+                                naeringskode = Naeringskoder().apply { kodeRef = "81.210" }
+                            })
+                        }
                     }
             }
-        }
-
-        res.response.organisasjon.navn = UstrukturertNavn().apply { navnelinje.add(organisasjonModell.navn) }
-        res.response.organisasjon.organisasjonDetaljer = OrganisasjonsDetaljer().apply {
-            registreringsDato = datatypeFactory.newXMLGregorianCalendar(OffsetDateTime.now().minusYears(1).toString())
-            datoSistEndret = datatypeFactory.newXMLGregorianCalendar(OffsetDateTime.now().minusYears(1).toString())
-            orgnummer = organisasjonModell.orgnr
-            forretningsadresse.add(tilSemistrukturertAdresse(organisasjonModell.forretningsadresse))
-            postadresse.add(tilSemistrukturertAdresse(organisasjonModell.postadresse))
-            navn.add(Organisasjonsnavn().apply {
-                navn = res.response.organisasjon.navn
-                redigertNavn = organisasjonModell.navn
-                fomBruksperiode = datatypeFactory.newXMLGregorianCalendar(OffsetDateTime.now().minusYears(1).toString())
-                fomGyldighetsperiode =
-                    datatypeFactory.newXMLGregorianCalendar(OffsetDateTime.now().minusYears(1).toString())
-            })
-            telefon.add(Telefonnummer().apply {
-                fomGyldighetsperiode =
-                    datatypeFactory.newXMLGregorianCalendar(OffsetDateTime.now().minusYears(1).toString())
-                fomBruksperiode = datatypeFactory.newXMLGregorianCalendar(OffsetDateTime.now().minusYears(1).toString())
-                identifikator = "+47 12 34 56 78"
-                type = Telefontyper().apply { this.value = "ARBT" }
-            })
-            navSpesifikkInformasjon = NAVSpesifikkInformasjon().apply { isErIA = false }
-            naering.add(Naering().apply {
-                fomBruksperiode = datatypeFactory.newXMLGregorianCalendar(OffsetDateTime.now().minusYears(1).toString())
-                fomGyldighetsperiode =
-                    datatypeFactory.newXMLGregorianCalendar(OffsetDateTime.now().minusYears(1).toString())
-                naeringskode = Naeringskoder().apply { kodeRef = "81.210" }
-            })
         }
 
         return res
@@ -82,8 +78,8 @@ class EregApi {
         return SemistrukturertAdresse().apply {
             adresseId = "adresseID"
             fomGyldighetsperiode =
-                datatypeFactory.newXMLGregorianCalendar(OffsetDateTime.now().minusYears(1).toString())
-            landkode = Landkoder().apply { value = intern.landkode }
+                tilXmlGregorianCalendar(LocalDateTime.now().minusYears(1))
+            landkode = Landkoder().apply { kodeRef = intern.landkode }
             adresseledd.addAll(listOf(
                 NoekkelVerdiAdresse().apply {
                     verdi = intern.adresselinje1

@@ -4,22 +4,22 @@ object OrganisasjonRepo {
     val repo: MutableMap<String, Organisasjon> = mutableMapOf()
 
     init {
-        repo["11111111"] = Organisasjon(
-            orgnr = "11111111",
+        repo["999999999"] = Organisasjon(
+            orgnr = "999999999",
             navn = "Ståles Stål AS",
             forretningsadresse = SemistrukturertAdresse(
                 adresselinje1 = "Adresselinje1",
                 poststed = "Oslo",
                 postnummer = "0010",
                 kommunenr = "0301",
-                landkode = "NOR"
+                landkode = "NO"
             ),
             postadresse = SemistrukturertAdresse(
                 adresselinje1 = "Adresselinje1",
                 poststed = "Adresselinje3",
                 postnummer = "0010",
                 kommunenr = "0301",
-                landkode = "NOR"
+                landkode = "NO"
             )
         )
     }

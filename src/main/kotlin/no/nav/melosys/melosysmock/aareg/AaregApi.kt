@@ -2,6 +2,7 @@ package no.nav.melosys.melosysmock.aareg
 
 import no.nav.melosys.melosysmock.organisasjon.OrganisasjonRepo
 import no.nav.melosys.melosysmock.person.PersonRepo
+import no.nav.melosys.melosysmock.utils.tilXmlGregorianCalendar
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.FinnArbeidsforholdPrArbeidstaker
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.FinnArbeidsforholdPrArbeidstakerResponse
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.FinnArbeidsforholdPrArbeidstakerUgyldigInput
@@ -18,17 +19,13 @@ import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition
 import org.springframework.xml.xsd.SimpleXsdSchema
 import org.springframework.xml.xsd.XsdSchema
 import java.math.BigDecimal
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.xml.datatype.DatatypeFactory
-import java.time.OffsetDateTime
 
 
 @Endpoint
 class AaregApi {
-
-    val datatypeFactory = DatatypeFactory.newInstance()
-    val datoformat = DateTimeFormatter.ISO_LOCAL_DATE_TIME
-
 
     @PayloadRoot(
         namespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
@@ -44,41 +41,51 @@ class AaregApi {
                 "Ingen person med ident ${request.parameters.ident}",
                 UgyldigInput()
             )
+
+        val ansettelsesperiodeFom = tilXmlGregorianCalendar(LocalDate.now().minusYears(5))
         val organisasjon = OrganisasjonRepo.repo.values.first()
 
         val arbeidsforhold = Arbeidsforhold().apply {
             arbeidsforholdID = "123"
             arbeidsforholdIDnav = 123
-        }
-
-        arbeidsforhold.ansettelsesPeriode = AnsettelsesPeriode().apply {
-            periode = Gyldighetsperiode().apply {
-                fom = datatypeFactory.newXMLGregorianCalendar(OffsetDateTime.now().minusYears(1).toString())
-                tom = datatypeFactory.newXMLGregorianCalendar(OffsetDateTime.now().toString())
+            opplysningspliktig = Organisasjon().apply {
+                navn = organisasjon.navn
+                orgnummer = organisasjon.orgnr
             }
+            ansettelsesPeriode = AnsettelsesPeriode().apply {
+                periode = Gyldighetsperiode().apply {
+                    fom = ansettelsesperiodeFom
+                }
+            }
+            arbeidsforholdstype = Arbeidsforholdstyper().apply {
+                value = "Ordinært arbeidsforhold"
+                kodeverksRef = "ordinaertArbeidsforholdp"
+            }
+            arbeidsgiver = Organisasjon().apply {
+                navn = organisasjon.navn
+                orgnummer = organisasjon.orgnr
+            }
+            arbeidstaker = Person().apply {
+                ident = NorskIdent().apply { ident = person.ident }
+            }
+            arbeidsavtale.add(Arbeidsavtale().apply {
+                fomGyldighetsperiode = ansettelsesperiodeFom
+                arbeidstidsordning = Arbeidstidsordninger().apply {
+                    value = "Ikke skift"
+                    kodeRef = "ikkeSkift"
+                }
+                avloenningstype = Avloenningstyper().apply { value = "fast" }
+                yrke = Yrker().apply {
+                    kodeRef = "0013008"
+                    value = "Konsulent"
+                }
+                avtaltArbeidstimerPerUke = BigDecimal("37.5")
+                stillingsprosent = BigDecimal("100")
+                sisteLoennsendringsdato = ansettelsesperiodeFom
+                beregnetAntallTimerPrUke = BigDecimal("37.5")
+                beregnetStillingsprosent = BigDecimal("100")
+            })
         }
-
-        arbeidsforhold.arbeidsforholdstype = Arbeidsforholdstyper().apply { value = "ordinaertArbeidsforholdp" }
-
-        arbeidsforhold.arbeidsgiver = Organisasjon().apply {
-            navn = organisasjon.navn
-            orgnummer = organisasjon.orgnr
-        }
-        arbeidsforhold.arbeidstaker = Person().apply {
-            ident = NorskIdent().apply { ident = person.ident }
-        }
-
-        arbeidsforhold.arbeidsavtale.add(Arbeidsavtale().apply {
-            fomGyldighetsperiode = arbeidsforhold.ansettelsesPeriode.periode.fom
-            arbeidstidsordning = Arbeidstidsordninger().apply { value = "ikkeSkift" }
-            avloenningstype = Avloenningstyper().apply { value = "fast" }
-            yrke = Yrker().apply { value = "0013008" }
-            avtaltArbeidstimerPerUke = BigDecimal("37.5")
-            stillingsprosent = BigDecimal("100")
-            sisteLoennsendringsdato = arbeidsforhold.ansettelsesPeriode.periode.fom
-            beregnetAntallTimerPrUke = BigDecimal("37.5")
-            beregnetStillingsprosent = BigDecimal("100")
-        })
 
         val res = FinnArbeidsforholdPrArbeidstakerResponse()
         res.parameters = no.nav.tjeneste.virksomhet.arbeidsforhold.v3.meldinger.FinnArbeidsforholdPrArbeidstakerResponse()
