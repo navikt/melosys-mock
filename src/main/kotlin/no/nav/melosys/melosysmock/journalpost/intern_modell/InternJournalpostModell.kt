@@ -2,6 +2,7 @@ package no.nav.melosys.melosysmock.journalpost.intern_modell
 
 import java.lang.IllegalStateException
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class JournalpostModell(
     var journalpostId: String,
@@ -18,6 +19,7 @@ data class JournalpostModell(
     var tittel: String? = null,
     var eksternReferanseId: String? = null,
     var journalfoerendeEnhet: String? = null,
+    var journalfoertDato: LocalDateTime? = null,
     val tilleggsoppltsninger: MutableSet<Tilleggsopplysning> = mutableSetOf()
 ) {
     fun validerKanFerdigstilles() {
