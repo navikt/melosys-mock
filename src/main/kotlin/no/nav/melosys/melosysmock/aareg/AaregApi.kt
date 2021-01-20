@@ -1,5 +1,6 @@
 package no.nav.melosys.melosysmock.aareg
 
+import no.nav.melosys.melosysmock.organisasjon.OrganisasjonRepo
 import no.nav.melosys.melosysmock.person.PersonRepo
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.FinnArbeidsforholdPrArbeidstaker
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.FinnArbeidsforholdPrArbeidstakerResponse
@@ -43,6 +44,7 @@ class AaregApi {
                 "Ingen person med ident ${request.parameters.ident}",
                 UgyldigInput()
             )
+        val organisasjon = OrganisasjonRepo.repo.values.first()
 
         val arbeidsforhold = Arbeidsforhold().apply {
             arbeidsforholdID = "123"
@@ -59,8 +61,8 @@ class AaregApi {
         arbeidsforhold.arbeidsforholdstype = Arbeidsforholdstyper().apply { value = "ordinaertArbeidsforholdp" }
 
         arbeidsforhold.arbeidsgiver = Organisasjon().apply {
-            navn = "Ståle sitt stål"
-            orgnummer = "11111111"
+            navn = organisasjon.navn
+            orgnummer = organisasjon.orgnr
         }
         arbeidsforhold.arbeidstaker = Person().apply {
             ident = NorskIdent().apply { ident = person.ident }

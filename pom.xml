@@ -21,6 +21,7 @@
         <kotlin.compiler.jvmTarget>11</kotlin.compiler.jvmTarget>
         <medlemskapsunntak-api-v1.version>1.1</medlemskapsunntak-api-v1.version>
         <nav.tjenestespesifikasjoner.version>1.2020.01.09-12.44-3713b7c04e1c</nav.tjenestespesifikasjoner.version>
+        <sakogbehandling.version>1.0.0-alpha011</sakogbehandling.version>
         <spring-boot.version>2.4.1</spring-boot.version>
         <springfox.version>3.0.0</springfox.version>
     </properties>
@@ -116,6 +117,17 @@
             <groupId>no.nav.tjenestespesifikasjoner</groupId>
             <artifactId>nav-journal-v3-tjenestespesifikasjon</artifactId>
             <version>${nav.tjenestespesifikasjoner.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tjenestespesifikasjoner</groupId>
+            <artifactId>nav-fim-organisasjon-v4-tjenestespesifikasjon</artifactId>
+            <version>${nav.tjenestespesifikasjoner.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tjenester.fim</groupId>
+            <artifactId>nav-fim-sakOgBehandling-v1-tjenestespesifikasjon</artifactId>
+            <version>${sakogbehandling.version}</version>
+            <classifier>jaxws</classifier>
         </dependency>
         <dependency>
             <groupId>no.nav.tjenestespesifikasjoner</groupId>
