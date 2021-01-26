@@ -20,6 +20,7 @@
         <kotlin.version>1.4.10</kotlin.version>
         <kotlin.compiler.jvmTarget>11</kotlin.compiler.jvmTarget>
         <nav.tjenestespesifikasjoner.version>1.2020.01.09-12.44-3713b7c04e1c</nav.tjenestespesifikasjoner.version>
+        <doksys.dokumentproduksjon.version>3.3.4</doksys.dokumentproduksjon.version>
         <spring-boot.version>2.4.1</spring-boot.version>
         <springfox.version>3.0.0</springfox.version>
     </properties>
@@ -95,6 +96,12 @@
             <groupId>no.nav.tjenestespesifikasjoner</groupId>
             <artifactId>nav-journal-v3-tjenestespesifikasjon</artifactId>
             <version>${nav.tjenestespesifikasjoner.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tjenester</groupId>
+            <artifactId>nav-dokumentproduksjon-v3-tjenestespesifikasjon</artifactId>
+            <version>${doksys.dokumentproduksjon.version}</version>
+            <classifier>jaxws</classifier>
         </dependency>
     </dependencies>
 
