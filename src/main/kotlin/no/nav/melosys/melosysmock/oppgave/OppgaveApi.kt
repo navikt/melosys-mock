@@ -5,12 +5,15 @@ import org.springframework.web.bind.annotation.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 
+import no.nav.melosys.melosysmock.oppgave.OppgaveRepo.repo as oppgaveRepo
+
 @RestController
 @RequestMapping("/api/v1/oppgaver")
 class OppgaveApi {
 
-    val oppgaveRepo: MutableMap<Int, Oppgave> = mutableMapOf()
-    var oppgaveIdTeller: Int = 1
+    companion object OppgaveIdTeller {
+        var oppgaveIdTeller: Int = 1
+    }
 
     @GetMapping
     fun hentOppgaveliste(
