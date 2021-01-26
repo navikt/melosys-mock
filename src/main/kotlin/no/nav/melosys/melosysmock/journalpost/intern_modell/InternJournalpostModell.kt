@@ -1,6 +1,8 @@
 package no.nav.melosys.melosysmock.journalpost.intern_modell
 
+import java.lang.IllegalStateException
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class JournalpostModell(
     var journalpostId: String,
@@ -10,7 +12,6 @@ data class JournalpostModell(
     var fagsystemId: String? = null,
     var journalStatus: JournalStatus? = null,
     var mottattDato: LocalDate? = null,
-    var mottakskanal: String? = null,
     var arkivtema: Tema? = null,
     var journalposttype: Journalposttype? = null,
     var bruker: JournalpostBruker? = null,
@@ -18,8 +19,32 @@ data class JournalpostModell(
     var tittel: String? = null,
     var eksternReferanseId: String? = null,
     var journalfoerendeEnhet: String? = null,
+    var journalfoertDato: LocalDateTime? = null,
     val tilleggsoppltsninger: MutableSet<Tilleggsopplysning> = mutableSetOf()
-)
+) {
+    fun validerKanFerdigstilles() {
+        if (journalStatus == JournalStatus.J) {
+            throw IllegalStateException("Journalpost er allerede ferdigstilt")
+        }
+        if (sakId == null && fagsystemId == null) {
+            throw IllegalStateException("SakId eller fagsystemId er påkrevd")
+        }
+        if (tittel == null) {
+            throw IllegalStateException("Tittel er på krevd")
+        }
+        if (avsenderMottaker.id == null || avsenderMottaker.type == null){
+            throw IllegalStateException("Avsendermottaker er påkrevd")
+        }
+        if (journalposttype == Journalposttype.INNGAAENDE && kanal == null) {
+            throw IllegalStateException("Mottakskanal er påkrevd")
+        }
+        if (bruker == null || bruker!!.brukerType == null || bruker!!.ident == null) {
+            throw IllegalStateException("Bruker er påkrevd")
+        }
+    }
+}
+
+
 
 data class DokumentModell(
     var dokumentId: String? = null,
