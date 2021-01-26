@@ -7,14 +7,14 @@ import no.nav.melosys.melosysmock.journalpost.journalpostapi.Dokument
 import no.nav.melosys.melosysmock.journalpost.journalpostapi.DokumentVariant
 import no.nav.melosys.melosysmock.journalpost.journalpostapi.OppdaterJournalpostRequest
 import no.nav.melosys.melosysmock.journalpost.journalpostapi.OpprettJournalpostRequest
+import no.nav.melosys.melosysmock.utils.lagRandomId
 import java.time.LocalDate
-import kotlin.random.Random
 
 class JournalpostMapper {
 
     fun tilModell(request: OpprettJournalpostRequest, forsoekFerdigstill: Boolean?): JournalpostModell {
         return JournalpostModell(
-            journalpostId = lagJournalpostID(),
+            journalpostId = lagRandomId(),
             avsenderMottaker = AvsenderMottaker(
                 id = request.avsenderMottaker?.id,
                 type = IdType.valueOf(request.avsenderMottaker?.idType?.name!!),
@@ -45,7 +45,7 @@ class JournalpostMapper {
             val dokumentTilknyttetJournalpost = if (i == 0) DokumentTilknyttetJournalpost.HOVEDDOKUMENT else DokumentTilknyttetJournalpost.VEDLEGG
             dokumentListe.add(
                 DokumentModell(
-                    dokumentId = lagJournalpostID(),
+                    dokumentId = lagRandomId(),
                     tittel = dok.tittel,
                     dokumentkategori = dok.dokumentKategori,
                     brevkode = dok.brevkode,
@@ -66,11 +66,6 @@ class JournalpostMapper {
             )
         }
     }
-
-    private fun lagJournalpostID(): String {
-        return Random.nextInt(1000, 1000000).toString()
-    }
-
 
     fun oppdaterModell(oppdatering: OppdaterJournalpostRequest, journalpostModell: JournalpostModell): JournalpostModell {
         val oppdatertModell = journalpostModell.copy()
